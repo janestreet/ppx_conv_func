@@ -240,6 +240,15 @@ module Gen_sig = struct
     | _ -> raise_unsupported ~loc extension_name
 end
 
+let arg_label_of_string s : Asttypes.arg_label =
+  if s = "" then
+    Nolabel
+  else if s.[0] = '?' then
+    Optional (String.sub s 1 (String.length s - 1))
+  else
+    Labelled s
+
+
 module Gen_struct = struct
 
   (*let label_arg ?label _loc name =
@@ -272,7 +281,7 @@ module Gen_struct = struct
     let last_f = value middle_f last_f in
     let add_one_field f acc (field_name, _kind, field_ty) =
       let f = f loc ~field_name ~field_ty in
-      pexp_apply ~loc acc [(field_name, f)]
+      pexp_apply ~loc acc [(arg_label_of_string field_name, f)]
     in
     let fields = fields lds in
     match fields with
