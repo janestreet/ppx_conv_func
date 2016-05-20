@@ -1,6 +1,6 @@
 version = "$(pkg_version)"
 description = "Deprecated"
-requires = "ppx_core ppx_type_conv"
+requires = "compiler-libs.common ppx_core ppx_type_conv"
 archive(byte  ) = "ppx_conv_func.cma"
 archive(native) = "ppx_conv_func.cmxa"
 plugin(byte  ) = "ppx_conv_func.cma"
@@ -11,7 +11,7 @@ exists_if = "ppx_conv_func.cma"
 package "for_ppx_deriving" (
   description = "Don't use this directly"
   error(ppx_driver) = "Cannot use ppx_conv_func.for_ppx_deriving when ppx_driver is set"
-  requires = "ppx_core.for_ppx_deriving ppx_deriving ppx_type_conv.for_ppx_deriving"
+  requires = "compiler-libs.common ppx_core.for_ppx_deriving ppx_deriving ppx_type_conv.for_ppx_deriving"
   exists_if = "ppx_conv_func.cma"
   ppxopt(-custom_ppx) = "ppx_deriving,./ppx_conv_func.cma"
 )
