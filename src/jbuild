@@ -1,0 +1,6 @@
+(library
+ ((name ppx_conv_func)
+  (public_name ppx_conv_func)
+  (wrapped false)
+  (libraries (ocamlcommon ppx_core ppx_type_conv))
+  (preprocess ((metaquot All)))))
