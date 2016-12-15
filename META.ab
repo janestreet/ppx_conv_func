@@ -1,8 +1,0 @@
-version = "$(pkg_version)"
-description = "Deprecated"
-requires = "compiler-libs.common ppx_core ppx_type_conv"
-archive(byte  ) = "ppx_conv_func.cma"
-archive(native) = "ppx_conv_func.cmxa"
-plugin(byte  ) = "ppx_conv_func.cma"
-plugin(native) = "ppx_conv_func.cmxs"
-exists_if = "ppx_conv_func.cma"
