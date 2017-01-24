@@ -1,10 +1,5 @@
-module List = ListLabels
-open Ppx_core.Std
-open Asttypes
-open Parsetree
+open Ppx_core
 open Ast_builder.Default
-
-[@@@metaloc loc]
 
 let raise_unsupported ~loc s =
   Location.raise_errorf ~loc
@@ -131,7 +126,7 @@ module Of_simple (S : Simple) = struct
     | Lident "float32_mat"
     | Lident "float64_mat"
     | Lident "exn" ->
-      let name = Longident.last id.txt in
+      let name = Longident.last_exn id.txt in
       Location.raise_errorf ~loc "%s"
         (S.unsupported_type_error_msg ~name)
     | Ldot (path, type_name) -> S.recursive loc ~field_name ~type_name ~path:(Some path)
@@ -177,7 +172,7 @@ module Of_complete (S : Complete) = struct
     | Lident "float32_mat"
     | Lident "float64_mat"
     | Lident "exn" ->
-      let name = Longident.last id.txt in
+      let name = Longident.last_exn id.txt in
       Location.raise_errorf ~loc "%s" (S.unsupported_type_error_msg ~name)
     | Ldot (path, type_name) -> S.recursive loc ~field_name ~type_name ~path:(Some path)
     | Lident type_name -> S.recursive loc ~field_name ~type_name ~path:None
@@ -241,10 +236,10 @@ module Gen_sig = struct
 end
 
 let arg_label_of_string s : Asttypes.arg_label =
-  if s = "" then
+  if String.is_empty s then
     Nolabel
-  else if s.[0] = '?' then
-    Optional (String.sub s 1 (String.length s - 1))
+  else if Char.equal s.[0] '?' then
+    Optional (String.drop_prefix s 1)
   else
     Labelled s
 

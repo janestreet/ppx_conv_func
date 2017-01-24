@@ -1,5 +1,4 @@
-open Asttypes
-open Parsetree
+open Ppx_core
 
 (* DO NOT USE THIS LIBRARY IN NEW CODE!!!
 
