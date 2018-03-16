@@ -1,4 +1,4 @@
-open Ppx_core
+open Ppxlib
 
 (* DO NOT USE THIS LIBRARY IN NEW CODE!!!
 
