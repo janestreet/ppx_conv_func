@@ -76,11 +76,11 @@ module type Matcher = sig
 end
 
 let conversion_of_type
-  ~conversion
-  ~conversion_name
-  ~merge_recursive
-  ~function_name
-  loc ~field_name ~field_ty =
+      ~conversion
+      ~conversion_name
+      ~merge_recursive
+      ~function_name
+      loc ~field_name ~field_ty =
   let rec aux loc field_ty =
     match field_ty.ptyp_desc with
     | Ptyp_constr (id, args) ->
@@ -195,27 +195,27 @@ let lambda loc ps e = eabstract ~loc ps e
 module Gen_sig = struct
   (*let label_arg _loc name ty = Ast.TyLab (_loc, name, ty)
 
-  let rec loop _loc this_type output_type = function
+    let rec loop _loc this_type output_type = function
     | [] -> <:ctyp< $this_type$ -> $output_type$ >>
     | tp :: tps ->
-        let tp = Gen.drop_variance_annotations tp in
-        let row_of = loop _loc <:ctyp< $this_type$ $tp$ >> output_type tps in
-        <:ctyp< ( $tp$ -> $output_type$) -> $row_of$ >>
+    let tp = Gen.drop_variance_annotations tp in
+    let row_of = loop _loc <:ctyp< $this_type$ $tp$ >> output_type tps in
+    <:ctyp< ( $tp$ -> $output_type$) -> $row_of$ >>
 
-  let row_of_t' ~record_name ~tps _loc =
+    let row_of_t' ~record_name ~tps _loc =
     let t = loop _loc <:ctyp< $lid:record_name$ >> <:ctyp< unit >> tps in
     let is_first = label_arg _loc "is_first" <:ctyp< bool >> in
     let is_last = label_arg _loc "is_last" <:ctyp< bool >> in
     let writer = label_arg _loc "writer" <:ctyp< string -> unit >> in
     <:sig_item< value $lid: "write_row_of_" ^ record_name ^ "'"$ :
-      $is_first$ -> $is_last$ -> $writer$ -> _ -> _ -> $t$ >>
-  ;;
+    $is_first$ -> $is_last$ -> $writer$ -> _ -> _ -> $t$ >>
+    ;;
 
-  let t_of_row' ~record_name _loc =
+    let t_of_row' ~record_name _loc =
     let f = <:ctyp< unit -> $lid: record_name$ >> in
     let pair = <:ctyp< $f$ * (string list) >> in
     <:sig_item< value $lid: record_name ^ "_of_row'"$ : _ -> string list -> $pair$ >>
-  ;;*)
+    ;;*)
 
   let fields_of_ty td ~extension_name ~nil ~record =
     let loc = td.ptype_loc in
@@ -248,11 +248,11 @@ module Gen_struct = struct
 
   (*let label_arg ?label _loc name =
     let l =
-      match label with
-      | None    -> name
-      | Some n  -> n in
+    match label with
+    | None    -> name
+    | Some n  -> n in
     Ast.PaLab (_loc, l, <:patt< $lid:name$ >> )
-  ;;*)
+    ;;*)
 
   let field ld =
     let mutability =
@@ -296,7 +296,7 @@ module Gen_struct = struct
   let ident x = x
 
   let generate_using_fold ?(wrap_body=ident) ~pass_acc ~pass_anonymous
-  ~conversion_of_type ~name ~lds loc =
+        ~conversion_of_type ~name ~lds loc =
     let acc = [%pat? acc ] in
     let init =
       if pass_acc then [%expr  Fields.fold ~init:acc ]

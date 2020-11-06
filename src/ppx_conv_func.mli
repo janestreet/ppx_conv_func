@@ -9,14 +9,14 @@ open Ppxlib
 val raise_unsupported : loc:Location.t -> string -> 'a
 
 (** A simple processor that takes a field name and generates an expression for the
-contents of that field *)
+    contents of that field *)
 type simple_processor =
   Location.t
   -> field_name:string
   -> expression
 
 (** The recursive counter-part to the previous. Additional arguments are the type name and
-the a path to make recursive calls *)
+    the a path to make recursive calls *)
 type recursive_processor =
   Location.t
   -> field_name:string
@@ -28,8 +28,8 @@ type recursive_processor =
 
 module type Simple = sig
   (** The simplest of all the extensions can only see atoms (leafs in the conversion type,
-  for example a string), and records or recursive types that need to be recursively
-  processed *)
+      for example a string), and records or recursive types that need to be recursively
+      processed *)
   val conversion_name : string
   val function_name : string option -> string
   val merge_recursive :
@@ -41,7 +41,7 @@ end
 
 module type Complete = sig
   (** A more complex extension may have a different behavior depending on the contents of
-  the field. *)
+      the field. *)
   val conversion_name : string
   val function_name : string option -> string
   val merge_recursive :
@@ -75,7 +75,7 @@ end
 
 module type Matcher = sig
   (** A module that converts a type into another expression that can be used in camlp4
-  extensions needs to have the following functions. *)
+      extensions needs to have the following functions. *)
 
   val conversion :
     Location.t
@@ -124,24 +124,24 @@ end
 module Gen_struct : sig
   val fields :
     label_declaration list ->
-      (string * [> `Immutable | `Mutable ] * core_type) list
+    (string * [> `Immutable | `Mutable ] * core_type) list
 
   val make_body :
     ?unique_f:(Location.t ->
-              field_name:string ->
-              field_ty:core_type -> expression) ->
+               field_name:string ->
+               field_ty:core_type -> expression) ->
     ?first_f:(Location.t ->
               field_name:string ->
               field_ty:core_type -> expression) ->
     ?last_f:(Location.t ->
-            field_name:string ->
-            field_ty:core_type -> expression) ->
+             field_name:string ->
+             field_ty:core_type -> expression) ->
     lds:label_declaration list ->
     init:expression ->
     Location.t ->
     (Location.t ->
-    field_name:string ->
-    field_ty:core_type -> expression) ->
+     field_name:string ->
+     field_ty:core_type -> expression) ->
     expression
 
   (** Create the anonymous pattern *)
@@ -165,11 +165,11 @@ module Gen_struct : sig
   val generate :
     extension_name:string
     -> record:(
-        tps:core_type list
-        -> record_name:string
-        -> Location.t
-        -> label_declaration list
-        -> 'new_record)
+      tps:core_type list
+      -> record_name:string
+      -> Location.t
+      -> label_declaration list
+      -> 'new_record)
     -> loc:Location.t
     -> path:string
     -> (rec_flag * type_declaration list)
