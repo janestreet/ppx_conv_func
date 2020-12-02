@@ -150,6 +150,7 @@ module Gen_struct : sig
 
   val generate_using_fold :
     ?wrap_body:(expression -> expression) ->
+    ?record_name:string ->
     pass_acc:bool ->
     pass_anonymous:bool ->
     conversion_of_type:(

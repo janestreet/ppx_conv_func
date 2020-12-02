@@ -295,12 +295,29 @@ module Gen_struct = struct
 
   let ident x = x
 
-  let generate_using_fold ?(wrap_body=ident) ~pass_acc ~pass_anonymous
+  let fields_module ~record_name ~loc ~suffix =
+    Ast_helper.Exp.ident
+      { loc
+      ; txt =
+          (Ldot (
+             (Lident
+                (match String.equal record_name "t" with
+                 | true -> "Fields"
+                 | false -> Printf.sprintf "Fields_of_%s" record_name )
+             ), suffix))
+
+      }
+  ;;
+  let generate_using_fold ?(wrap_body=ident) ?(record_name="t") ~pass_acc ~pass_anonymous
         ~conversion_of_type ~name ~lds loc =
     let acc = [%pat? acc ] in
     let init =
-      if pass_acc then [%expr  Fields.fold ~init:acc ]
-      else [%expr  Fields.fold ~init:[] ]
+      [%expr
+        [%e fields_module ~record_name ~loc ~suffix:"fold"]
+          ~init:[%e
+            if pass_acc
+            then [%expr acc]
+            else [%expr []]]]
     in
     let body = make_body ~lds ~init loc conversion_of_type in
     let anonymous = anonymous loc in
