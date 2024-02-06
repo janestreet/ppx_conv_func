@@ -1,2 +1,6 @@
-(library (name ppx_conv_func) (public_name ppx_conv_func)
- (libraries base ppxlib) (preprocess (pps ppxlib.metaquot)))
+(library
+ (name ppx_conv_func)
+ (public_name ppx_conv_func)
+ (libraries base ppxlib)
+ (preprocess
+  (pps ppxlib.metaquot)))
