@@ -94,12 +94,12 @@ let conversion_of_type
   ~field_ty
   =
   let rec aux loc field_ty =
-    match field_ty.ptyp_desc with
+    match Ppxlib_jane.Shim.Core_type_desc.of_parsetree field_ty.ptyp_desc with
     | Ptyp_constr (id, args) ->
       let id_expr = conversion loc ~field_name ~id in
       let args_expr = List.map args ~f:(aux loc) in
       merge_recursive loc ~field_name ~tp:field_ty (eapply ~loc id_expr args_expr)
-    | Ptyp_var param -> evar ~loc (function_name (Some param))
+    | Ptyp_var (param, None) -> evar ~loc (function_name (Some param))
     | _ -> Location.raise_errorf ~loc "%s: unsupported type construct" conversion_name
   in
   aux loc field_ty
