@@ -240,8 +240,8 @@ module Gen_sig = struct
     let loc = td.ptype_loc in
     let unsupported () = raise_unsupported ~loc extension_name in
     let tps = List.map td.ptype_params ~f:fst in
-    match td.ptype_kind with
-    | Ptype_open | Ptype_variant _ -> unsupported ()
+    match Ppxlib_jane.Shim.Type_kind.of_parsetree td.ptype_kind with
+    | Ptype_open | Ptype_variant _ | Ptype_record_unboxed_product _ -> unsupported ()
     | Ptype_record lds -> record ~tps ~record_name:td.ptype_name.txt loc lds
     | Ptype_abstract ->
       (match td.ptype_manifest with
@@ -361,8 +361,8 @@ module Gen_struct = struct
     let loc = td.ptype_loc in
     let unsupported () = raise_unsupported ~loc extension_name in
     let tps = List.map td.ptype_params ~f:fst in
-    match td.ptype_kind with
-    | Ptype_open | Ptype_variant _ -> unsupported ()
+    match Ppxlib_jane.Shim.Type_kind.of_parsetree td.ptype_kind with
+    | Ptype_open | Ptype_variant _ | Ptype_record_unboxed_product _ -> unsupported ()
     | Ptype_record lds -> record ~tps ~record_name:td.ptype_name.txt loc lds
     | Ptype_abstract -> unsupported ()
   ;;
